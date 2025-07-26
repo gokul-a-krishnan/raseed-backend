@@ -15,8 +15,10 @@ def getAllReceipts():
         for doc in docs:
               data = doc.to_dict()
               results.append({
-            'id': data.get('ID'),  # Firestore document ID
+            'id': data.get('ID'), 
+            'biller_name': data.get('BILLER_NAME'),
             'date': data.get('DATE').isoformat() if data.get('DATE') else None,
+            'bill_value': data.get('BILL_VALUE'),
             'items_missed': data.get('ITEMS_MISSED'),
             'source_id': data.get('SOURCE_ID'),
                             })
@@ -36,7 +38,8 @@ def getReceiptById(custom_id):
         if doc:
             data = doc.to_dict()
             return jsonify({
-                'id': doc.id,  # Firestore-generated doc ID
+                'biller_name': data.get('BILLER_NAME'),
+                'bill_value': data.get('BILL_VALUE'),
                 'date': data.get('DATE').isoformat() if data.get('DATE') else None,
                 'items_missed': data.get('ITEMS_MISSED'),
                 'source_id': data.get('SOURCE_ID'),
@@ -47,7 +50,7 @@ def getReceiptById(custom_id):
 
 def addReceipt(data):
     # Basic validation
-    required_fields = ['ID','DATE', 'ITEMS_MISSED', 'SOURCE_ID']
+    required_fields = ['ID','BILLER_NAME','BILL_VALUE','DATE', 'ITEMS_MISSED', 'SOURCE_ID']
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Missing required fields'})
 
@@ -69,7 +72,7 @@ def addReceipt(data):
         return jsonify({'error': str(e)})
     
 def update_receipt(data,item_id):  
-    allowed_fields = {'DATE', 'ITEMS_MISSED', 'SOURCE_ID'}
+    allowed_fields = {'DATE', 'ITEMS_MISSED', 'SOURCE_ID', 'BILLER_NAME', 'BILL_VALUE'}
     update_data = {}
 
     try:

@@ -12,7 +12,7 @@ from flask import request
 from waitress import serve
 
 from controller.receipt import receipt_blueprint
-import json
+from controller.intelligent import intelligent_blueprint
 
 load_dotenv(override=True)
 
@@ -20,6 +20,7 @@ app = Flask(__name__)
 
 
 app.register_blueprint(receipt_blueprint, url_prefix='/receipt')
+app.register_blueprint(intelligent_blueprint, url_prefix='/intelligent')
 
 
 @app.route('/')

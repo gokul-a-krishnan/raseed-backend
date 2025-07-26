@@ -10,7 +10,6 @@ receipt_blueprint = Blueprint("receipt", __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-account.json"
 db = firestore.Client()
 collection_name = 'receipt'
-api_key = "AIzaSyAvIc4fXxCryA0G2KVHTpFsrXTwwSUQ4gI"  
 
 CORS(
     receipt_blueprint,
@@ -50,17 +49,5 @@ def update_item(item_id):
         return update_receipt(data,item_id), 200
     except ValueError:
         return jsonify({'error': 'Invalid date format. Use ISO 8601'}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@receipt_blueprint.route('/categorize-receipts', methods=['POST'])
-def categorize_receipt():
-    try:
-        files = request.files.getlist('files')
-        if not files:
-            return jsonify({'error': 'No files provided'}), 400
-        file_list = [(file, file.filename) for file in files]
-        result = extract_invoices_from_files(api_key, file_list)
-        return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500

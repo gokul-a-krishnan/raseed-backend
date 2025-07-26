@@ -1,2 +1,4 @@
 /.venv
 /.env
+/service-account.json
+/wallet.json

@@ -3,20 +3,27 @@ from flask_cors import CORS
 from werkzeug.exceptions import BadRequest
 from google.cloud import firestore
 import os
-from service.receipt import getAllReceipts,getReceiptById, addReceipt,update_receipt
+from service.receipt import getAllReceipts, getReceiptById, addReceipt, update_receipt
 from service.invoice_categorization import extract_invoices_from_files
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
+
+GEMINI_API_KEY = os.getenv["GEMINI_API_KEY"]
 
 intelligent_blueprint = Blueprint("intelligent", __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-account.json"
 db = firestore.Client()
 collection_name = 'receipt'
-api_key = "xx"  
+api_key = GEMINI_API_KEY
+
 
 CORS(
     intelligent_blueprint,
     resources={r"/*": {"origins": "*"}},
     origins=["*"],
 )
+
 
 @intelligent_blueprint.route('/categorize-receipts', methods=['POST'])
 def categorize_receipt():
@@ -31,12 +38,12 @@ def categorize_receipt():
         raise BadRequest(str(e))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
 
 # @intelligent_blueprint.route('/xx', methods=['POST'])
 # def categorize_receipt():
 #     try:
-        
+
 #         return jsonify(xx), 200
 #     except BadRequest as e:
 #         raise BadRequest(str(e))

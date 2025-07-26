@@ -10,7 +10,7 @@ intelligent_blueprint = Blueprint("intelligent", __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-account.json"
 db = firestore.Client()
 collection_name = 'receipt'
-api_key = "AIzaSyAvIc4fXxCryA0G2KVHTpFsrXTwwSUQ4gI"  
+api_key = "XX"  
 
 CORS(
     intelligent_blueprint,

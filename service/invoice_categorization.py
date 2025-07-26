@@ -41,12 +41,10 @@ def extract_invoices_from_files(
     def process_with_gemini(input_data, filename, is_image=True):
         if is_image:
             prompt = """You are an expert invoice analyzer.
-
-From the invoice image, extract the following details in JSON format:
-
-```json
-{
-  "billing_name": "<name of the person or entity billed>",
+            From the invoice image, extract the following details in JSON format:
+            ```json
+            {
+  "biller_name": "<name of the person/shop/organization who issued the billed>",
   "billing_date": "<date of the bill in YYYY-MM-DD format if available>",
   "category": "<automatically determined category, such as grocery, rent, utility, food, etc.>",
   "items": [
@@ -55,6 +53,7 @@ From the invoice image, extract the following details in JSON format:
   "total": "<total amount>"
 }
 ```"""
+
             try:
                 response = vision_model.generate_content([prompt, input_data])
                 raw_text = response.text.strip()
@@ -68,7 +67,7 @@ From the following invoice text, extract the following details in JSON format:
 
 ```json
 {{
-  "billing_name": "<name of the person or entity billed>",
+  "biller_name": "<name of the person/shop/organization who issued the bill>",
   "billing_date": "<date of the bill in YYYY-MM-DD format if available>",
   "category": "<automatically determined category, such as grocery, rent, utility, food, etc.>",
   "items": [
@@ -93,7 +92,7 @@ Invoice text:
             print(f"⚠️ Could not parse JSON for {filename}. Raw output saved.")
             return {
                 "file": filename,
-                "billing_name": "unknown",
+                "biller_name": "unknown",
                 "billing_date": "unknown",
                 "category": "unknown",
                 "items": {},

@@ -13,15 +13,41 @@ def getAllReceipts():
         docs = query.stream()
         results = []
         for doc in docs:
-              data = doc.to_dict()
-              results.append({
+            data = doc.to_dict()              
+            # Handle date safely
+            raw_date = data.get('DATE')
+            iso_date = None
+            if isinstance(raw_date, datetime):
+                iso_date = raw_date.isoformat()
+            elif isinstance(raw_date, str):
+                try:
+                    iso_date = datetime.fromisoformat(raw_date).isoformat()
+                except ValueError:
+                    iso_date = None
+
+            # Normalize items field
+            items_raw = data.get('ITEMS', {})
+            items_list = []
+
+            if isinstance(items_raw, dict):
+                items_list = [
+                    {"item": key, "price": value}
+                    for key, value in items_raw.items()
+                ]
+            elif isinstance(items_raw, list):
+                # Already a list of dicts, assume correct
+                items_list = items_raw
+            # else: leave items_list as []
+
+              
+            results.append({
             'id': data.get('ID'), 
             'biller_name': data.get('BILLER_NAME'),
-            'date': data.get('DATE').isoformat() if data.get('DATE') else None,
+            'date': iso_date,
             'bill_value': data.get('BILL_VALUE'),
             'items_missed': data.get('ITEMS_MISSED'),
             'source_id': data.get('SOURCE_ID'),
-            'items':data.get('ITEMS')
+            'items':data.get('ITEMS', {})
                             })
         return jsonify(results)
     
@@ -45,7 +71,7 @@ def getReceiptById(custom_id):
                 'items_missed': data.get('ITEMS_MISSED'),
                 'source_id': data.get('SOURCE_ID'),
                 'ID': data.get('ID')  ,
-                'items': data.get('ITEMS')
+                'items':data.get('ITEMS', {})
 
             })
         else:

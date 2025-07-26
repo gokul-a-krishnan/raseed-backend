@@ -1,0 +1,6 @@
+python env Commands
+
+install uv: pipx install uv
+create env:  uv venv --python 3.11.6
+Activate:  uv init
+Add Dep:  uv add {dep}

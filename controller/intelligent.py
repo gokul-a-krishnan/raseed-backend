@@ -10,7 +10,7 @@ intelligent_blueprint = Blueprint("intelligent", __name__)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service-account.json"
 db = firestore.Client()
 collection_name = 'receipt'
-api_key = "xxx"  
+api_key = "xx"  
 
 CORS(
     intelligent_blueprint,
@@ -31,3 +31,14 @@ def categorize_receipt():
         raise BadRequest(str(e))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+# @intelligent_blueprint.route('/xx', methods=['POST'])
+# def categorize_receipt():
+#     try:
+        
+#         return jsonify(xx), 200
+#     except BadRequest as e:
+#         raise BadRequest(str(e))
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500

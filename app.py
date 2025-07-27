@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask import request
 from waitress import serve
-
 from controller.receipt import receipt_blueprint
 from controller.intelligent import intelligent_blueprint
 

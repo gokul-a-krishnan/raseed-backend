@@ -17,6 +17,14 @@ CORS(
     origins=["*"],
 )
 
+@receipt_blueprint.route('/add-receipts', methods=['POST'])
+def add_item():
+    data = request.get_json()
+    try:    
+        return addReceipt(data), 200   
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @receipt_blueprint.route("/get-all", methods=["GET"])
 def get_all():
@@ -34,13 +42,7 @@ def get_by_id(custom_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-@receipt_blueprint.route('/add-receipts', methods=['POST'])
-def add_item():
-    data = request.get_json()
-    try:    
-        return addReceipt(data), 200   
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+
     
 @receipt_blueprint.route('/update-receipts/<string:item_id>', methods=['PATCH'])
 def update_item(item_id):

@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "apscheduler>=3.11.0",
     "dotenv>=0.9.9",
     "firestore>=0.0.8",
     "fitz>=0.0.1.dev2",
@@ -15,6 +16,7 @@ dependencies = [
     "google-auth>=2.40.3",
     "google-cloud>=0.34.0",
     "google-generativeai>=0.8.5",
+    "imapclient>=3.0.1",
     "pillow>=11.3.0",
     "pymupdf>=1.26.3",
     "requests>=2.32.4",
